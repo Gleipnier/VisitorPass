@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
 
             'admin' => \App\Http\Middleware\Admin::class,
-            'check.profile' => \App\Http\Middleware\CheckProfileCompletion::class,
+            // 'check.profile' => \App\Http\Middleware\CheckProfileCompletion::class,
         ]);
 
     })
