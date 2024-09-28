@@ -21,14 +21,13 @@
         <div class="page-header">
           <div class="container-fluid">
 
-            {{-- @include('admin.body') --}}
             <div class="div_heading">
 
-              <div class="container">
-                <h1>Admin Dashboard</h1>
-                <a href="{{ route('admin.scanner') }}" class="btn btn-primary">QR Scanner</a>
-                <a href="{{ route('admin.statistics') }}" class="btn btn-secondary">Visit Statistics</a>
-            </div>
+                <div class="container">
+                        <h1>QR Code Scanner</h1>
+                        <div id="reader"></div>
+                        <div id="result"></div>
+                </div>    
 
             </div>
           </div>
@@ -43,17 +42,38 @@
     <script src="{{asset('/admincss/vendor/jquery-validation/jquery.validate.min.js')}}"></script>
     <script src="{{asset('/admincss/js/charts-home.js')}}"></script>
     <script src="{{asset('/admincss/js/front.js')}}"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <script>
-      fetch('/admin/visit-stats')
-        .then(response => response.json())
-        .then(data => {
-            let statsHtml = '<table class="table"><thead><tr><th>Date</th><th>Visits</th></tr></thead><tbody>';
-            data.forEach(stat => {
-                statsHtml += `<tr><td>${stat.date}</td><td>${stat.count}</td></tr>`;
-            });
-            statsHtml += '</tbody></table>';
-            document.getElementById('stats').innerHTML = statsHtml;
-        });
+      function onScanSuccess(decodedText, decodedResult) {
+    // Handle the scanned code as you like, for example:
+    console.log(`Code matched = ${decodedText}`, decodedResult);
+    document.getElementById('result').textContent = decodedText;
+    
+    // Send the scanned data to the server
+    fetch('/admin/verify-pass', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ qrData: decodedText })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.valid) {
+            alert(`Valid pass for ${data.user.name}. Action: ${data.action}`);
+        } else {
+            alert('Invalid pass');
+        }
+    });
+}
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader",
+    { fps: 10, qrbox: {width: 250, height: 250} },
+    /* verbose= */ false
+);
+html5QrcodeScanner.render(onScanSuccess);
     </script>
   </body>
 </html>

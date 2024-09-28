@@ -12,9 +12,10 @@
           </div>
           <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
           <ul class="list-unstyled">
-                  <li class="active"><a href="{{url('visitorverify')}}"> <i class="icon-home"></i>Home </a></li>
+                  <li class="active"><a href="{{url('admin/dashboard')}}"> <i class="icon-home"></i>Home </a></li>
                   <li><a href="{{url('view_category')}}"> <i class="icon-grid"></i>Category </a></li>
-                  <li><a href="{{url('visitors')}}"> <i class="fa fa-bar-chart"></i>Visitors </a></li>
+                  <li><a href="{{url('scanner')}}"> <i class="fa fa-bar-chart"></i>Scanner </a></li>
+                  <li><a href="{{url('statistics')}}"> <i class="fa fa-bar-chart"></i>Visitors </a></li>
                   <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Example dropdown </a>
                     <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                       <li><a href="#">Page</a></li>

@@ -21,14 +21,12 @@
         <div class="page-header">
           <div class="container-fluid">
 
-            {{-- @include('admin.body') --}}
             <div class="div_heading">
 
-              <div class="container">
-                <h1>Admin Dashboard</h1>
-                <a href="{{ route('admin.scanner') }}" class="btn btn-primary">QR Scanner</a>
-                <a href="{{ route('admin.statistics') }}" class="btn btn-secondary">Visit Statistics</a>
-            </div>
+                <div class="container">
+                        <h1>Visit Statistics</h1>
+                        <div id="stats"></div>
+                </div>   
 
             </div>
           </div>
@@ -45,15 +43,15 @@
     <script src="{{asset('/admincss/js/front.js')}}"></script>
     <script>
       fetch('/admin/visit-stats')
-        .then(response => response.json())
-        .then(data => {
-            let statsHtml = '<table class="table"><thead><tr><th>Date</th><th>Visits</th></tr></thead><tbody>';
-            data.forEach(stat => {
-                statsHtml += `<tr><td>${stat.date}</td><td>${stat.count}</td></tr>`;
-            });
-            statsHtml += '</tbody></table>';
-            document.getElementById('stats').innerHTML = statsHtml;
+    .then(response => response.json())
+    .then(data => {
+        let statsHtml = '<table class="table"><thead><tr><th>Date</th><th>Visits</th></tr></thead><tbody>';
+        data.forEach(stat => {
+            statsHtml += `<tr><td>${stat.date}</td><td>${stat.count}</td></tr>`;
         });
+        statsHtml += '</tbody></table>';
+        document.getElementById('stats').innerHTML = statsHtml;
+    });
     </script>
   </body>
 </html>

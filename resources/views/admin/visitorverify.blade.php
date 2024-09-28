@@ -25,7 +25,7 @@
                 <form id="verify-form">
                         @csrf
                         <input type="text" id="qr-data" placeholder="Scan QR Code">
-                        <button type="submit">Verify</button>
+                        <button class="btn btn-primary" type="submit">Verify</button>
                 </form>
                 <div id="verification-result" style="padding-top: 20px;">
 

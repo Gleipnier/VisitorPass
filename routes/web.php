@@ -28,14 +28,19 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-Route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth','admin']);
+Route::get('admin/dashboard', [AdminController::class, 'index'])->middleware(['auth','admin']);
 Route::get('view_category', [AdminController::class, 'view_category'])->middleware(['auth','admin']);
 Route::get('visitors', [AdminController::class, 'visitors'])->middleware(['auth','admin']);
 Route::get('visitorverify', [AdminController::class, 'visitorverify'])->middleware(['auth','admin']);
-// Route::get('admin/verifypage', [HomeController::class, 'verifypage'])->middleware(['auth','admin']);
+Route::get('scanner', [AdminController::class, 'scanner'])->name('admin.scanner')->middleware(['auth','admin']);
+Route::get('statistics', [AdminController::class, 'statistics'])->name('admin.statistics')->middleware(['auth','admin']);
+
+
 
 
 // QR Generation
 
 Route::post('/generate-visitors-pass', [VisitorPassController::class, 'generate'])->middleware('auth');
+Route::get('/download-visitor-pass', [VisitorPassController::class, 'downloadPDF'])->middleware('auth');
 Route::post('/admin/verify-pass', [VerificationController::class, 'verifyPass'])->middleware('auth','admin');
+Route::get('/admin/visit-stats', [VerificationController::class, 'getVisitStats'])->middleware('auth:admin');
