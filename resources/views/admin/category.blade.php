@@ -2,6 +2,27 @@
 <html>
   <head> 
     @include('admin.css')
+    <style type="text/css">
+        input[type=text] {
+            width: 400px;
+            padding: 12px 20px;
+            /* margin: 8px 0; */
+            /* display: inline-block; */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=submit] {
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+        .div_heading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+    </style>
   </head>
   <body>
     @include('admin.header')
@@ -12,9 +33,17 @@
       <div class="page-content">
         <div class="page-header">
           <div class="container-fluid">
+                <h1 style="color: white">Add Category</h1>
 
-            @include('admin.body')
 
+                <div class="div_heading">
+                <form>
+                        <div>
+                                <input type="text" placeholder="Category Name">
+                                <input class="btn btn-primary" type="submit" value="Add Category">
+                        </div>
+                </form>
+                </div>
           </div>
       </div>
     </div>

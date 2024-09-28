@@ -8,6 +8,8 @@ use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VisitorPassController extends Controller
 {
@@ -68,7 +70,28 @@ class VisitorPassController extends Controller
             'qrCode' => $qrCode,
         ]);
     }
-   
+    
+    public function downloadPDF(Request $request)
+    {
+        $user = $request->user();
+        $qrCodeData = json_encode([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+        ]);
+        $qrCode = QrCode::size(300)->format('png')->generate($qrCodeData);
+        $qrCodeBase64 = base64_encode($qrCode);
+
+        $pdf = Pdf::loadView('visitor_pass_pdf', [
+            'user' => $user,
+            'qrCode' => $qrCodeBase64
+        ]);
+
+        return $pdf->download('visitor_pass.pdf');
+    }
+
+
     private function sendSMS($to, $message)
     {
         $sid = env('TWILIO_SID');

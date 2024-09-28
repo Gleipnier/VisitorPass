@@ -13,7 +13,6 @@
         <div class="page-header">
           <div class="container-fluid">
 
-            @include('admin.body')
 
           </div>
       </div>

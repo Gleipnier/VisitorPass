@@ -1,10 +1,11 @@
 <?php
-use App\Http\Controllers\Admin\VerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VisitorPassController;
+use App\Http\Controllers\Admin\VerificationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,10 +29,13 @@ require __DIR__.'/auth.php';
 
 
 Route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth','admin']);
+Route::get('view_category', [AdminController::class, 'view_category'])->middleware(['auth','admin']);
+Route::get('visitors', [AdminController::class, 'visitors'])->middleware(['auth','admin']);
+Route::get('visitorverify', [AdminController::class, 'visitorverify'])->middleware(['auth','admin']);
 // Route::get('admin/verifypage', [HomeController::class, 'verifypage'])->middleware(['auth','admin']);
 
 
 // QR Generation
 
 Route::post('/generate-visitors-pass', [VisitorPassController::class, 'generate'])->middleware('auth');
-Route::post('/admin/verify-pass', [VerificationController::class, 'verifyPass'])->middleware('auth:admin');
+Route::post('/admin/verify-pass', [VerificationController::class, 'verifyPass'])->middleware('auth','admin');
