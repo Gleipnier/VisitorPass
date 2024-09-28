@@ -17,7 +17,7 @@ class VisitorPassController extends Controller
         $qrCode = (string) QrCode::format('svg')->size(300)->generate(json_encode([
             'id' => $user->id,
             'name' => $user->name,
-            'email' => $user->phone,
+            'phone' => $user->phone,
         ]));
 
         

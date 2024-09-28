@@ -1,5 +1,4 @@
 
-/* navbar section start */
 .profile-container {
     display: flex;
     flex-direction: column;
@@ -7,6 +6,9 @@
     justify-content: center;
     height: 70vh;
 }
+
+
+/* navbar section start */
     .navbar {
         background-color: #15292B;
         color: black;

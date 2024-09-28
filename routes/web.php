@@ -28,6 +28,8 @@ require __DIR__.'/auth.php';
 
 
 Route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth','admin']);
+// Route::get('admin/verifypage', [HomeController::class, 'verifypage'])->middleware(['auth','admin']);
+
 
 // QR Generation
 

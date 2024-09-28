@@ -10,6 +10,10 @@ class HomeController extends Controller
         return view('admin.index');
     }
 
+    public function verifypage(){
+        return view('admin.verify');
+    }
+
     public function home(){
         return view('home.index');
     }

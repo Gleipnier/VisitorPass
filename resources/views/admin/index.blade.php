@@ -1,19 +1,60 @@
 <x-app-layout>
-        <x-slot name="header">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Dashboard') }}
-            </h2>
-        </x-slot>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
+<style>
     
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        {{ __("Work In Progress") }}
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    </x-app-layout>
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+}
+
+</style>
+<div class="admin-container">
+<h2>Verify Visitor Pass</h2>
+
+<form id="verify-form">
+    @csrf
+    <input type="text" id="qr-data" placeholder="Scan QR Code">
+    <button type="submit">Verify</button>
+</form>
+
+<div id="verification-result"></div>
+</div>
+
+<script>
+document.getElementById('verify-form').addEventListener('submit', function(e) {
+e.preventDefault();
+
+fetch('/admin/verify-pass', {
+    method: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+        qrData: document.getElementById('qr-data').value
+    })
+})
+.then(response => response.json())
+.then(data => {
+    if (data.valid) {
+        document.getElementById('verification-result').innerHTML = `
+            <h3>Valid Pass</h3>
+            <p>Name: ${data.user.name}</p>
+            <p>Email: ${data.user.email}</p>
+        `;
+    } else {
+        document.getElementById('verification-result').innerHTML = '<h3>Invalid Pass</h3>';
+    }
+});
+});
+</script>
+
+</x-app-layout>
