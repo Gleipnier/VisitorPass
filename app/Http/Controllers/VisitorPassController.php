@@ -2,15 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Holiday;
+use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Twilio\Rest\Client;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VisitorPassController extends Controller
 {
     public function generate(Request $request)
     {
+
+        // Check if today is Sunday
+        $today = Carbon::now();
+
+        if ($today->isSunday()) {
+             return response()->json([
+                'success' => false,
+                'message' => 'Visitor passes cannot be generated on Sundays.',
+            ]);
+            }
+
+
+        // Checking if its holiday
+        $today = now()->toDateString();
+    
+        $holiday = Holiday::where('date', $today)->first();
+        
+        if ($holiday) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Visitor passes are not available on holidays: ' . $holiday->name,
+            ]);
+        }
+
+
         $user = $request->user();
        
         // Generate QR code

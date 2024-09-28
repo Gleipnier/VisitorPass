@@ -26,13 +26,12 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             console.log('QR Code:', data.qrCode);
             if (data.success) {
                 document.getElementById('qr-code-container').innerHTML = data.qrCode;
                 document.getElementById('qr-code-container').style.display = 'block';
             } else {
-                alert('Failed to generate visitor\'s pass');
+                alert(data.message ||'Failed to generate visitor\'s pass');
             }
         });
     });
