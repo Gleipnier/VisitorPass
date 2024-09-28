@@ -34,8 +34,6 @@ document.getElementById('generate-pass').addEventListener('click', function() {
             document.getElementById('download-pdf').style.display = 'block';
             if (data.smsSent) {
                 alert('Visitor\'s pass generated and SMS sent successfully!');
-            } else {
-                alert('Visitor\'s pass generated, but there was an issue sending the SMS.');
             }
         } else {
             alert('Failed to generate visitor\'s pass: ' + (data.message || 'Unknown error'));
