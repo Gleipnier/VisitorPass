@@ -11,7 +11,6 @@ Route::get('/', function () {
 });
 
 Route::get('/home',[HomeController::class,'home'])->name('home');
-Route::get('/edit',[HomeController::class,'edit'])->name('edit');
 // Route::get('/navbar',[NavbarController::class,'index'])->name('navbar');
 
 Route::get('/dashboard', function () {
@@ -22,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/edit',[HomeController::class,'edit'])->name('home.edit');
 });
 
 require __DIR__.'/auth.php';

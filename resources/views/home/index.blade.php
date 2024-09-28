@@ -6,7 +6,6 @@
 
 <div class="profile-container">
         <h2>Welcome, {{ Auth::user()->name }}</h2>
-        <p>Your profile is complete.</p>
         
         <button id="generate-pass" class="btn btn-primary">Generate Visitor's Pass</button>
         

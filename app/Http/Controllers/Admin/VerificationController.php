@@ -18,7 +18,7 @@ class VerificationController extends Controller
         
         $user = User::find($qrData['id']);
         
-        if (!$user || $user->name !== $qrData['name'] || $user->phone !== $qrData['phone']) {
+        if (!$user || $user->name !== $qrData['name'] || $user->phone !== $qrData['phone'] || $user->designation !== $qrData['designation']) {
             return response()->json(['valid' => false]);
         }
         
@@ -27,6 +27,7 @@ class VerificationController extends Controller
             'user' => [
                 'name' => $user->name,
                 'phone' => $user->phone,
+                'designation' => $user->designation,
             ]
         ]);
     }

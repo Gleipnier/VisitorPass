@@ -9,10 +9,10 @@
         <button id="menu-toggle" class="menu-toggle">☰</button>
         <ul class="nav-list">
             <li><a href="{{ route('home') }}">Home</a></li>
-            <li><a href="{{ route('profile.edit') }}">Edit Profile</a></li>
             @if (Route::has('login'))
             @auth
-            <li><a href="{{ route('edit') }}">Edit Visitor Pass</a></li>
+            <li><a href="{{ route('home.edit') }}">Edit Visitor Pass</a></li>
+            <li><a href="{{ route('profile.edit') }}">Edit Profile</a></li>
             <li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf

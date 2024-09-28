@@ -39,12 +39,23 @@ class VisitorPassController extends Controller
 
 
         $user = $request->user();
+
+        
+        // Check if phone_number or any other required field is null
+        if (is_null($user->designation)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please complete your profile to generate visitor\'s pass',
+            ], 400);
+        }
+
        
         // Generate QR code
         $qrCode = (string) QrCode::format('svg')->size(300)->generate(json_encode([
             'id' => $user->id,
             'name' => $user->name,
             'phone' => $user->phone,
+            'designation' => $user->designation,
         ]));
 
         
