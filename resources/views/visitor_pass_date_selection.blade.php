@@ -123,7 +123,8 @@
             }
         });
         document.getElementById('download-pdf').addEventListener('click', function() {
-             window.location.href = '/download-visitor-pass';
+            const visitDate = document.getElementById('visit_date').value;
+            window.location.href = `/download-visitor-pass?visit_date=${visitDate}`;
         });
     </script>
 </body>
