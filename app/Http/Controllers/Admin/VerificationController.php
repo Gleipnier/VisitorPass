@@ -55,7 +55,7 @@ class VerificationController extends Controller
             'user' => [
                 'name' => $user->name,
                 'phone' => $user->phone,
-                'designation' => $user->designation,
+                'email' => $user->email,
             ]
         ]);
     }

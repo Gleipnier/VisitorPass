@@ -57,7 +57,7 @@ class VisitorPassController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'phone' => $user->phone,
-            'designation' => $user->designation,
+            'email' => $user->email,
         ]));
 
         

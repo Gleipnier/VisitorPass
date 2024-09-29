@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\VisitorPassController;
 use App\Http\Controllers\Admin\VerificationController;
 
@@ -44,3 +45,11 @@ Route::post('/generate-visitors-pass', [VisitorPassController::class, 'generate'
 Route::get('/download-visitor-pass', [VisitorPassController::class, 'downloadPDF'])->middleware('auth');
 Route::post('/admin/verify-pass', [VerificationController::class, 'verifyPass'])->middleware('auth','admin');
 Route::get('/admin/visit-stats', [VerificationController::class, 'getVisitStats'])->middleware('auth:admin');
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::put('/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
+});
