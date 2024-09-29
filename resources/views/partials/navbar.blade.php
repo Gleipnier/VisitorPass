@@ -11,7 +11,7 @@
             <li><a href="{{ route('home') }}">Home</a></li>
             @if (Route::has('login'))
             @auth
-            <li><a href="{{ route('home.edit') }}">Edit Visitor Pass</a></li>
+            <li><a href="{{ route('user.profile.edit') }}">Edit Visitor Pass</a></li>
             <li><a href="{{ route('profile.edit') }}">Edit Profile</a></li>
             <li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">

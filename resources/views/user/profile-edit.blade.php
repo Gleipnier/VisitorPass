@@ -123,10 +123,11 @@
                         </div>
     
                         <div class="form-group">
-                            <button type="submit" class="submit-button">
+                            <button id="update-finished" type="submit" class="submit-button">
                                 Update Profile
                             </button>
                         </div>
+                        
                     </form>
                 </div>
             </div>
