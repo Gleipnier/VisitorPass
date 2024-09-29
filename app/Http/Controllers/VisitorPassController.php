@@ -13,25 +13,31 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class VisitorPassController extends Controller
 {
+    public function showDateSelection()
+    {
+        return view('visitor_pass_date_selection');
+    }
+
     public function generate(Request $request)
     {
+        Log::info('Received request data:', $request->all()); // Add this line
 
-        // Check if today is Sunday
-        $today = Carbon::now();
+        $request->validate([
+            'visit_date' => 'required|date|after_or_equal:today',
+        ]);
 
-        if ($today->isSunday()) {
-             return response()->json([
+        $visitDate = Carbon::parse($request->visit_date);
+
+        // Check if selected date is Sunday
+        if ($visitDate->isSunday()) {
+            return response()->json([
                 'success' => false,
-                'message' => 'Visitor passes cannot be generated on Sundays.',
+                'message' => 'Visitor passes cannot be generated for Sundays.',
             ]);
-            }
+        }
 
-
-        // Checking if its holiday
-        $today = now()->toDateString();
-    
-        $holiday = Holiday::where('date', $today)->first();
-        
+        // Check if selected date is a holiday
+        $holiday = Holiday::where('date', $visitDate->toDateString())->first();
         if ($holiday) {
             return response()->json([
                 'success' => false,
@@ -39,10 +45,8 @@ class VisitorPassController extends Controller
             ]);
         }
 
-
         $user = $request->user();
 
-        
         // Check if phone_number or any other required field is null
         if (is_null($user->designation)) {
             return response()->json([
@@ -51,60 +55,58 @@ class VisitorPassController extends Controller
             ], 400);
         }
 
-       
         // Generate QR code
         $qrCode = (string) QrCode::format('svg')->size(300)->generate(json_encode([
             'id' => $user->id,
             'name' => $user->name,
             'phone' => $user->phone,
-            'email' => $user->email,
+            'designation' => $user->designation,
+            'visit_date' => $visitDate->toDateString(),
         ]));
 
-        
-       
         // Send SMS
-        $this->sendSMS($user->phone, 'Your visitor pass has been generated.');
-       
+        $this->sendSMS($user->phone, 'Your visitor pass has been generated for ' . $visitDate->format('Y-m-d') . '.');
+
         return response()->json([
             'success' => true,
             'qrCode' => $qrCode,
         ]);
     }
-    
+
     public function downloadPDF(Request $request)
     {
         $user = $request->user();
+        $visitDate = $request->input('visit_date');
+        Log::info('Visit Date for PDF:', ['visit_date' => $visitDate]);
         $qrCodeData = json_encode([
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
+            'visit_date' => $visitDate,
         ]);
         $qrCode = QrCode::size(300)->format('png')->generate($qrCodeData);
         $qrCodeBase64 = base64_encode($qrCode);
-
         $pdf = Pdf::loadView('visitor_pass_pdf', [
             'user' => $user,
-            'qrCode' => $qrCodeBase64
+            'qrCode' => $qrCodeBase64,
+            'visit_date' => $visitDate,
         ]);
-
         return $pdf->download('visitor_pass.pdf');
     }
-
 
     private function sendSMS($to, $message)
     {
         $sid = env('TWILIO_SID');
         $token = env('TWILIO_TOKEN');
         $from = env('TWILIO_PHONE');
-
-            // Prepend country code +91 for Indian numbers if not already included
+        // Prepend country code +91 for Indian numbers if not already included
         if (substr($to, 0, 1) !== '+') {
-        $to = '+91' . ltrim($to, '0');  // Remove leading zero if present
+            $to = '+91' . ltrim($to, '0');  // Remove leading zero if present
         }
-       
+
         $client = new Client($sid, $token);
-       
+
         try {
             $client->messages->create($to, [
                 'from' => $from,

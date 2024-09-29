@@ -13,40 +13,12 @@
 
         </div>
 
-        <button id="download-pdf" class="btn btn-secondary" style="display: none; margin-top: 10px;">Download PDF</button>
-    </div>
+</div>
     
     <script>
-document.getElementById('generate-pass').addEventListener('click', function() {
-    fetch('/generate-visitors-pass', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            document.getElementById('qr-code-container').innerHTML = data.qrCode;
-            document.getElementById('qr-code-container').style.display = 'block';
-            document.getElementById('download-pdf').style.display = 'block';
-            if (data.smsSent) {
-                alert('Visitor\'s pass generated and SMS sent successfully!');
-            }
-        } else {
-            alert('Failed to generate visitor\'s pass: ' + (data.message || 'Unknown error'));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while generating the visitor\'s pass');
+        document.getElementById('generate-pass').addEventListener('click', function() {
+        // Redirect to the visit date selection page
+        window.location.href = '/select-visit-date';
     });
-});
-
-document.getElementById('download-pdf').addEventListener('click', function() {
-    window.location.href = '/download-visitor-pass';
-});
     </script>
 @endsection
