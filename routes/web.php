@@ -61,3 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
     Route::put('/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
 });
+
+
+
+Route::get('/visitor-pass-history', [VisitorPassController::class, 'getHistory']);

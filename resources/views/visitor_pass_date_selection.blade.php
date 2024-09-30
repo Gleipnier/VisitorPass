@@ -47,6 +47,19 @@
             margin-top: 1.5rem;
         }
 
+        .qr-code {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .qr-code svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .history-table {
+            margin-top: 30px;
+        }
+
         /* Make QR Code container responsive */
         #qrCodeContainer {
             display: flex;
@@ -75,46 +88,69 @@
 
 <body>
     
-    <div class="container">
+    <div class="container" id="app">
         <h1>Select Visit Date</h1>
         <div class="mb-3">
             <label for="visit_date" class="form-label">Visit Date:</label>
-            <input type="date" id="visit_date" v-model="visitDate" :min="today" class="form-control">
+            <input type="date" id="visit_date" v-model="visitDate" @input="setVisitDate" :min="today" class="form-control">
         </div>
-
         <button @click="generatePass" class="btn btn-primary w-100">Generate Pass</button>
-
+        
         <!-- Message Section -->
         <div v-if="message" :class="['alert mt-4', message.success ? 'alert-success' : 'alert-danger']" role="alert">
             @{{ message.text }}
         </div>
-
+        
         <!-- QR Code Display -->
         <div id="qrCodeContainer" v-if="qrCode">
-            <h2 class="text-center mt-4"></h2>
+            <h2 class="text-center mt-4">Your Visitor Pass</h2>
             <div v-html="qrCode" class="qr-code"></div>
         </div>
-        
-        <button id="download-pdf" class="btn btn-secondary w-100" style="display: none; margin-top: 10px;">Download PDF
-        </button>
-
-        <button id="go-home" class="btn btn-secondary w-100" style="display: none; margin-top: 10px;">GO HOME
-        </button>
-        
+       
+        <button id="download-pdf" @click="downloadPdf" class="btn btn-secondary w-100" v-if="qrCode" style="margin-top: 10px;">Download PDF</button>
+        <button id="go-home" @click="goHome" class="btn btn-secondary w-100" style="margin-top: 10px;">GO HOME</button>
+       
+        <!-- History Section -->
+        <div class="history-table" v-if="history.length > 0">
+            <h3 style="color: #fff">Previous Passes</h3>
+            <table class="table table-striped">
+                <thead style="color: white;">
+                    <tr>
+                        <th>Visit Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="pass in history" :key="pass.id">
+                        <td style="color: #fff">@{{ pass.visit_date }}</td>
+                        <td>
+                            <button @click="downloadPdf(pass.visit_date)" class="btn btn-sm btn-info">Download</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         new Vue({
-            el: '.container',
+            el: '#app',
             data: {
                 visitDate: '',
                 message: null,
                 qrCode: null,
                 today: new Date().toISOString().split('T')[0],
+                history: []
+            },
+            mounted() {
+                this.fetchHistory();
             },
             methods: {
+                setVisitDate(event) {
+                    // Use the value of the input, not the event object
+                    this.visitDate = event.target.value;
+                },
                 generatePass() {
                     axios.post('/generate-visitors-pass', {
                         visit_date: this.visitDate
@@ -123,8 +159,7 @@
                         if (response.data.success) {
                             this.qrCode = response.data.qrCode;
                             this.message = { success: true, text: 'Pass generated successfully!' };
-                            document.getElementById('download-pdf').style.display = 'block';
-                            document.getElementById('go-home').style.display = 'block';
+                            this.fetchHistory(); // Refresh history after generating new pass
                         } else {
                             this.message = { success: false, text: response.data.message };
                         }
@@ -132,15 +167,25 @@
                     .catch(error => {
                         this.message = { success: false, text: error.response.data.message || 'An error occurred.' };
                     });
+                },
+                downloadPdf(date) {
+                    window.location.href = `/download-visitor-pass?visit_date=${date || this.visitDate}`;
+                },
+                goHome() {
+                    window.location.href = '/home';
+                },
+                
+                fetchHistory() {
+                    axios.get('/visitor-pass-history')
+                    .then(response => {
+                        this.history = response.data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching history:', error);
+                    });
                 }
+                
             }
-        });
-        document.getElementById('download-pdf').addEventListener('click', function() {
-            const visitDate = document.getElementById('visit_date').value;
-            window.location.href = `/download-visitor-pass?visit_date=${visitDate}`;
-        });
-        document.getElementById('go-home').addEventListener('click', function() {
-            window.location.href = `/home`;
         });
     </script>
 </body>

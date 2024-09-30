@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Holiday;
 use Twilio\Rest\Client;
+use App\Models\VisitorPass;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class VisitorPassController extends Controller
 {
@@ -65,12 +68,21 @@ class VisitorPassController extends Controller
             'visit_date' => $visitDate->toDateString(),
         ]));
 
+
+        // Save the pass
+        VisitorPass::create([
+            'user_id' => Auth::id(),
+            'visit_date' => $request->visit_date,
+        ]);
+
+
         // Send SMS
         $this->sendSMS($user->phone, 'Your visitor pass has been generated for ' . $visitDate->format('Y-m-d') . '.');
 
         return response()->json([
             'success' => true,
             'qrCode' => $qrCode,
+            'message' => 'Pass generated successfully!'
         ]);
     }
 
@@ -116,5 +128,14 @@ class VisitorPassController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to send SMS: ' . $e->getMessage());
         }
+    }
+
+    public function getHistory()
+    {
+        $history = VisitorPass::where('user_id', auth::id())
+                              ->orderBy('visit_date', 'desc')
+                              ->get(['id', 'visit_date']);
+
+        return response()->json($history);
     }
 }
