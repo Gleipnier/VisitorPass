@@ -16,15 +16,15 @@
         }
 
         .btn-primary {
-            background-color: #facc15;
-            color: #000;
+            background-color: hsl(150, 7.69%, 94.9%);
+            color: #374151;
         }
         .btn-primary:hover {
-            background-color: #b9c81af1;
+            background-color: #facc15;
         }
         .container {
             max-width: 500px;
-            background: white;
+            background: #8268d1;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -32,7 +32,7 @@
 
         h1 {
             font-size: 1.75rem;
-            color: #374151;
+            color: #f8f9fa;
             font-weight: 600;
             margin-bottom: 1.5rem;
             text-align: center;
@@ -40,6 +40,7 @@
 
         label {
             font-weight: 500;
+            color: #fff;
         }
 
         button {
