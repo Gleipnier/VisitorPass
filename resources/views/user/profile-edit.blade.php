@@ -121,6 +121,11 @@
                             <label for="email" class="form-label">Email</label>
                             <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required class="form-input">
                         </div>
+
+                        <div class="form-group">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" name="address" id="address" value="{{ old('address', $user->address) }}" required class="form-input">
+                        </div>
     
                         <div class="form-group">
                             <button id="update-finished" type="submit" class="submit-button">

@@ -66,9 +66,9 @@
 </head>
 
 <body>
+    
     <div class="container">
         <h1>Select Visit Date</h1>
-
         <div class="mb-3">
             <label for="visit_date" class="form-label">Visit Date:</label>
             <input type="date" id="visit_date" v-model="visitDate" :min="today" class="form-control">
@@ -83,12 +83,16 @@
 
         <!-- QR Code Display -->
         <div id="qrCodeContainer" v-if="qrCode">
-            <h2 class="text-center mt-4">Your QR Code:</h2>
+            <h2 class="text-center mt-4"></h2>
             <div v-html="qrCode" class="qr-code"></div>
         </div>
         
         <button id="download-pdf" class="btn btn-secondary w-100" style="display: none; margin-top: 10px;">Download PDF
         </button>
+
+        <button id="go-home" class="btn btn-secondary w-100" style="display: none; margin-top: 10px;">GO HOME
+        </button>
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -112,6 +116,7 @@
                             this.qrCode = response.data.qrCode;
                             this.message = { success: true, text: 'Pass generated successfully!' };
                             document.getElementById('download-pdf').style.display = 'block';
+                            document.getElementById('go-home').style.display = 'block';
                         } else {
                             this.message = { success: false, text: response.data.message };
                         }
@@ -125,6 +130,9 @@
         document.getElementById('download-pdf').addEventListener('click', function() {
             const visitDate = document.getElementById('visit_date').value;
             window.location.href = `/download-visitor-pass?visit_date=${visitDate}`;
+        });
+        document.getElementById('go-home').addEventListener('click', function() {
+            window.location.href = `/home`;
         });
     </script>
 </body>

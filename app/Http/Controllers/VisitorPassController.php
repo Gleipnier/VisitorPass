@@ -48,7 +48,7 @@ class VisitorPassController extends Controller
         $user = $request->user();
 
         // Check if phone_number or any other required field is null
-        if (is_null($user->designation)) {
+        if (is_null($user->address)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Please complete your profile to generate visitor\'s pass',
@@ -60,7 +60,8 @@ class VisitorPassController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'phone' => $user->phone,
-            'designation' => $user->designation,
+            'address' => $user->address,
+            'email' => $user->email,
             'visit_date' => $visitDate->toDateString(),
         ]));
 

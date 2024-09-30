@@ -23,9 +23,10 @@ class UserProfileController extends Controller
         'name' => 'required|string|max:255',
         'phone' => 'required|string|max:20',
         'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'address' => 'required|string|max:255',
     ]);
 
-    $user->update($request->only(['name', 'phone', 'email']));
+    $user->update($request->only(['name', 'phone', 'email', 'address']));
 
     return redirect()->route('user.profile.edit')->with('success', 'Profile updated successfully.');
     }
