@@ -71,8 +71,8 @@
 }
 
 .submit-button {
-    background-color: #4f46e5;
-    color: white;
+    background-color: #facc15;
+    color: #374151;
     font-size: 1rem;
     padding: 0.75rem 1.5rem;
     border-radius: 0.375rem;
@@ -82,7 +82,7 @@
 }
 
 .submit-button:hover {
-    background-color: #4338ca;
+    background-color: #b9c81af1;
 }
 
 .submit-button:focus {

@@ -13,12 +13,12 @@
         }
         .container {
             min-height: 100vh;
-            background-color: #166534;
+            background: linear-gradient(to right, #E5D9F2, #CDC1FF); 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #15292B ;
             padding: 20px;
             box-sizing: border-box;
         }
@@ -49,7 +49,7 @@
             z-index: 1;
         }
         .card {
-            background-color: #15803d;
+            background-color: #fff;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;

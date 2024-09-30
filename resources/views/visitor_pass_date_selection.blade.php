@@ -15,6 +15,13 @@
             min-height: 100vh;
         }
 
+        .btn-primary {
+            background-color: #facc15;
+            color: #000;
+        }
+        .btn-primary:hover {
+            background-color: #b9c81af1;
+        }
         .container {
             max-width: 500px;
             background: white;
@@ -25,7 +32,7 @@
 
         h1 {
             font-size: 1.75rem;
-            color: #343a40;
+            color: #374151;
             font-weight: 600;
             margin-bottom: 1.5rem;
             text-align: center;

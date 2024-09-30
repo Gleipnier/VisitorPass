@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Your App Name')</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <style>
+        body {
+            background-color: hsl(150, 7.69%, 94.9%);
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
+    </style>
 </head>
 <body>
     <header>

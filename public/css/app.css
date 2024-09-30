@@ -6,11 +6,29 @@
     justify-content: center;
     height: 70vh;
 }
-
+.profile-container h2{
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+.btn-primary {
+    background-color: #facc15;
+    color: #374151;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
 /* navbar section start */
+.nav-list .icon {
+    margin-right: 8px; /* Space between icon and text */
+    fill: currentColor; /* Makes the icon color match the text */
+}
     .navbar {
-        background-color: #15292B;
+        background: linear-gradient(to right, #E5D9F2, #CDC1FF); 
         color: black;
         width: 100%;
         z-index: 1000;
@@ -19,12 +37,14 @@
     }
     
     .logout-button {
-        background-color: #15292B;
+        background-color: #8268d1;
         color: #fff;
         border: none;
         padding: 10px 20px;
         font-size: 0.9rem;
         cursor: pointer;
+        border-radius: 12px;
+        margin-top: 4px;
     }
 
     .navbar-container {
@@ -41,7 +61,7 @@
     }
     
     .logo img {
-        width: 50px;
+        width: 100%;
         height: 50px;
     }
 
@@ -62,9 +82,9 @@
     }
     
     .nav-list li a {
-        color: #fff;
+        color: #15292B ;
         text-decoration: none;
-        padding: 10px 15px;
+        padding: 15px 15px;
         display: block;
     }
     
@@ -79,7 +99,7 @@
             right: -250px;
             width: 250px;
             height: 100vh;
-            background-color: #15292B;
+            background: linear-gradient(to right, #E5D9F2, #CDC1FF); 
             flex-direction: column;
             transition: right 0.3s ease-in-out;
         }
@@ -95,7 +115,10 @@
         .nav-list li:last-child {
             border-bottom: none;
         }
+        .logout-button {
+            margin-top: 13px;
+            margin-left: 13px;
+        }
     }
-
 
 /* navbar section end */

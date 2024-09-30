@@ -7,7 +7,7 @@
 <div class="profile-container">
         <h2>Welcome, {{ Auth::user()->name }}</h2>
         
-        <button id="generate-pass" class="btn btn-primary">Generate Visitor's Pass</button>
+        <button id="generate-pass" class="btn-primary">Generate Visitor's Pass</button>
         
         <div id="qr-code-container" style="display: none;">
 
