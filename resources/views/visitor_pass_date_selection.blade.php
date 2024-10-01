@@ -122,7 +122,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="pass in history" :key="pass.id">
-                        <td style="color: #fff">@{{ pass.visit_date }}</td>
+                        <td style="color: #fff">@{{ pass.formattedDate }}</td>
                         <td>
                             <button @click="downloadPdf(pass.visit_date)" class="btn btn-sm btn-info">Download</button>
                         </td>
@@ -150,12 +150,15 @@
                 setVisitDate(event) {
                     // Use the value of the input, not the event object
                     this.visitDate = event.target.value;
+                    console.log('Visit date set:', this.visitDate);
                 },
                 generatePass() {
+                    console.log('Generating pass with date:', this.visitDate);
                     axios.post('/generate-visitors-pass', {
                         visit_date: this.visitDate
                     })
                     .then(response => {
+                        console.log('Response:', response.data); 
                         if (response.data.success) {
                             this.qrCode = response.data.qrCode;
                             this.message = { success: true, text: 'Pass generated successfully!' };
@@ -178,7 +181,13 @@
                 fetchHistory() {
                     axios.get('/visitor-pass-history')
                     .then(response => {
-                        this.history = response.data;
+                        this.history = response.data
+                        .map(pass => {
+                            return {
+                                ...pass,
+                                formattedDate: new Date(pass.visit_date).toLocaleDateString() // Format the date
+                            };
+                        });
                     })
                     .catch(error => {
                         console.error('Error fetching history:', error);
