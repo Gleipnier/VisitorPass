@@ -92,7 +92,7 @@
         <h1>Select Visit Date</h1>
         <div class="mb-3">
             <label for="visit_date" class="form-label">Visit Date:</label>
-            <input type="date" id="visit_date" v-model="visitDate" @input="setVisitDate" :min="today" class="form-control">
+            <input type="date" id="visit_date" v-model="visitDate" :min="today" class="form-control">
         </div>
         <button @click="generatePass" class="btn btn-primary w-100">Generate Pass</button>
         
@@ -147,11 +147,7 @@
                 this.fetchHistory();
             },
             methods: {
-                setVisitDate(event) {
-                    // Use the value of the input, not the event object
-                    this.visitDate = event.target.value;
-                    console.log('Visit date set:', this.visitDate);
-                },
+                
                 generatePass() {
                     console.log('Generating pass with date:', this.visitDate);
                     axios.post('/generate-visitors-pass', {
@@ -171,8 +167,12 @@
                         this.message = { success: false, text: error.response.data.message || 'An error occurred.' };
                     });
                 },
-                downloadPdf(date) {
-                    window.location.href = `/download-visitor-pass?visit_date=${date || this.visitDate}`;
+                downloadPdf(date = this.visitDate) {
+                    if (typeof date === 'object') {
+                        // Avoid passing an event object
+                        date = this.visitDate;
+                    }
+                    window.location.href = `/download-visitor-pass?visit_date=${date}`;
                 },
                 goHome() {
                     window.location.href = '/home';

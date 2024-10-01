@@ -43,15 +43,12 @@ Route::get('statistics', [AdminController::class, 'statistics'])->name('admin.st
 
 Route::get('/select-visit-date', [VisitorPassController::class, 'showDateSelection'])->middleware('auth')->name('visitor.pass.select-date');
 
-// Update the generate route to use the new method name
 Route::post('/generate-visitors-pass', [VisitorPassController::class, 'generate'])->middleware('auth')->name('visitor.pass.generate');
 
-// Keep the download route as is
 Route::get('/download-visitor-pass', [VisitorPassController::class, 'downloadPDF'])->middleware('auth')->name('visitor.pass.download');
 
-// Route::post('/generate-visitors-pass', [VisitorPassController::class, 'generate'])->middleware('auth');
-// Route::get('/download-visitor-pass', [VisitorPassController::class, 'downloadPDF'])->middleware('auth');
 Route::post('/admin/verify-pass', [VerificationController::class, 'verifyPass'])->middleware('auth','admin');
+
 Route::get('/admin/visit-stats', [VerificationController::class, 'getVisitStats'])->middleware('auth:admin');
 
 
